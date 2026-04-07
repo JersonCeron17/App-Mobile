@@ -1,121 +1,156 @@
+import { Ionicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
+import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import { useState } from "react";
-import { Button, Image, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [estado, setEstado] = useState("Disponible");
+  const handleNext = () => {
+    router.push({
+      pathname: "/profile",
+      params: { name, email },
+    });
+  };
 
   return (
-    <ScrollView style={styles.container}>
+    <LinearGradient colors={["#667eea", "#764ba2", "#f093fb", "#f5576c"]} style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.logoContainer}>
+          <Image source={require("../assets/images/react-logo.png")} style={styles.logo} />
+          <Text style={styles.appTitle}>Mi App</Text>
+        </View>
 
-      <Image
-        source={require("./assets/perfil.jpg")}
-        style={styles.imagen}
-      />
+        <View style={styles.formContainer}>
+          <Text style={styles.title}>Inicio de Sesión</Text>
 
-      <Text style={styles.titulo}>Título principal</Text>
-      <Text style={styles.subtitulo}>Subtítulo de la aplicación</Text>
+          <View style={styles.inputContainer}>
+            <Ionicons name="person" size={20} color="#666" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Nombre"
+              placeholderTextColor="#999"
+              value={name}
+              onChangeText={setName}
+            />
+          </View>
 
-      <Text style={styles.estado}>Estado: {estado}</Text>
+          <View style={styles.inputContainer}>
+            <Ionicons name="mail" size={20} color="#666" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Correo"
+              placeholderTextColor="#999"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+            />
+          </View>
 
-      <View style={styles.boton}>
-        <Button
-          title="Cambiar estado"
-          onPress={() => setEstado(estado === "Disponible" ? "Ocupado" : "Disponible")}
-        />
-      </View>
+          <View style={styles.inputContainer}>
+            <Ionicons name="lock-closed" size={20} color="#666" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Contraseña"
+              placeholderTextColor="#999"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+          </View>
 
-      <TextInput style={styles.input} placeholder="Nombre" />
-      <TextInput style={styles.input} placeholder="Apellido" />
-      <TextInput style={styles.input} placeholder="Correo" keyboardType="email-address" />
-
-      <View style={styles.card}>
-        <Text style={styles.cardText}>Tarjeta 1</Text>
-      </View>
-
-      <View style={styles.card}>
-        <Text style={styles.cardText}>Tarjeta 2</Text>
-      </View>
-
-      <View style={styles.badgeContainer}>
-        <Text style={styles.badge}>Badge 1</Text>
-        <Text style={styles.badge}>Badge 2</Text>
-        <Text style={styles.badge}>Badge 3</Text>
-      </View>
-
-    </ScrollView>
+          <TouchableOpacity style={styles.buttonContainer} onPress={handleNext}>
+            <LinearGradient colors={["#ff6b6b", "#ffa726"]} style={styles.button}>
+              <Text style={styles.buttonText}>Siguiente</Text>
+              <Ionicons name="arrow-forward" size={20} color="#fff" />
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-
-  container:{
-    padding:20,
-    backgroundColor:"#f2f2f2"
+  container: {
+    flex: 1,
   },
-
-  imagen:{
-    width:120,
-    height:120,
-    borderRadius:60,
-    alignSelf:"center",
-    marginBottom:10
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
+    padding: 20,
   },
-
-  titulo:{
-    fontSize:26,
-    fontWeight:"bold",
-    textAlign:"center"
+  logoContainer: {
+    alignItems: "center",
+    marginBottom: 40,
   },
-
-  subtitulo:{
-    textAlign:"center",
-    color:"gray",
-    marginBottom:10
+  logo: {
+    width: 100,
+    height: 100,
+    resizeMode: "contain",
   },
-
-  estado:{
-    textAlign:"center",
-    marginBottom:10,
-    fontWeight:"bold"
+  appTitle: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#fff",
+    marginTop: 10,
   },
-
-  boton:{
-    marginBottom:20
+  formContainer: {
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    borderRadius: 20,
+    padding: 30,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 10,
   },
-
-  input:{
-    backgroundColor:"white",
-    padding:12,
-    borderRadius:8,
-    marginBottom:10,
-    borderWidth:1,
-    borderColor:"#ddd"
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 30,
+    color: "#333",
   },
-
-  card:{
-    backgroundColor:"white",
-    padding:15,
-    borderRadius:10,
-    marginBottom:10,
-    elevation:3
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f9f9f9",
+    borderRadius: 10,
+    marginBottom: 15,
+    paddingHorizontal: 15,
+    borderWidth: 1,
+    borderColor: "#ddd",
   },
-
-  cardText:{
-    fontSize:16
+  icon: {
+    marginRight: 10,
   },
-
-  badgeContainer:{
-    flexDirection:"row",
-    gap:10,
-    marginTop:10
+  input: {
+    flex: 1,
+    height: 50,
+    fontSize: 16,
+    color: "#333",
   },
-
-  badge:{
-    backgroundColor:"#3498db",
-    color:"white",
-    padding:8,
-    borderRadius:20
-  }
-
+  buttonContainer: {
+    marginTop: 30,
+    borderRadius: 25,
+    overflow: "hidden",
+  },
+  button: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginRight: 10,
+  },
 });
